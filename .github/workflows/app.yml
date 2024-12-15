@@ -19,13 +19,13 @@ jobs:
           gradle-version: 8.7
           arguments: build
           build-root-directory: app
-      - run: make -C checkstyleMain
-      - run: make -C test
+      - run: make checkstyleMain
+      - run: make test
       - name: Publish code coverage
         uses: paambaati/codeclimate-action@v9.0.0
         env:
           CC_TEST_REPORTER_ID: 61b985c380c213a8c5437b2d8356ae9178671e8e636cb061276cb7d5fe60827b
           JACOCO_SOURCE_PATH: /app/src/main/java
         with:
-          coverageCommand: make -C report
+          coverageCommand: make report
           coverageLocations: /app/build/reports/jacoco/test/jacocoTestReport.xml:jacoco
