@@ -1,32 +1,67 @@
 name: Java CI
 
 on:
-  - push
-  - pull_request
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
+      # 1. Проверка кода
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # 2. Установка Java
+      - name: Setup Java
+        uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'temurin'
-      - uses: gradle/gradle-build-action@v3
+
+      # 3. Установка Gradle
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v3
         with:
           gradle-version: 8.9
-      - name: checkstyleMain
+
+      # 4. Запуск проверки стиля
+      - name: Run Checkstyle
         run: ./gradlew checkstyleMain
         working-directory: ./app
-      - name: test
+
+      # 5. Запуск тестов
+      - name: Run Tests
         run: ./gradlew test
         working-directory: ./app
-      - name: Publish code coverage
-        uses: paambaati/codeclimate-action@v9.0.0
+
+      # 6. Генерация отчета Jacoco
+      - name: Generate Jacoco Report
+        run: ./gradlew jacocoTestReport
+        working-directory: ./app
+
+      # 7. Установка Code Climate Reporter
+      - name: Download Code Climate Test Reporter
+        run: curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-reporter
+
+      - name: Set Execute Permissions
+        run: chmod +x ./cc-reporter
+
+      # 8. Подготовка CC Reporter
+      - name: Prepare CC Reporter
+        run: ./cc-reporter before-build
         env:
-          CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
-          JACOCO_SOURCE_PATH: ${{github.workspace}}/app/src/main/java
-        with:
-          coverageCommand: make report
-          coverageLocations: ${{github.workspace}}/app/build/reports/jacoco/test/jacocoTestReport.xml:jacoco
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+
+      # 9. Отправка покрытия кода
+      - name: Upload Coverage to Code Climate
+        run: |
+          ./cc-reporter format-coverage ./app/build/reports/jacoco/test/jacocoTestReport.xml --input-type jacoco
+          ./cc-reporter upload-coverage
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
