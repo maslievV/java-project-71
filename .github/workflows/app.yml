@@ -21,6 +21,10 @@ jobs:
           build-root-directory: app
       - run: make checkstyleMain
       - run: make test
+      - name: Prepare CC Reporter
+        run: ./cc-reporter before-build
+        env:
+          CC_TEST_REPORTER_ID: 61b985c380c213a8c5437b2d8356ae9178671e8e636cb061276cb7d5fe60827b
       - name: Publish code coverage
         uses: paambaati/codeclimate-action@v9.0.0
         env:
