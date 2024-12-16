@@ -1,5 +1,5 @@
 setup:
-	./gradlew wrapper --gradle-version 8.7
+	./gradlew wrapper --gradle-version 8.5
 
 clean:
 	./gradlew clean
@@ -11,7 +11,7 @@ install:
 	./gradlew clean install
 
 run-dist:
-	./build/install/app/bin/app
+	./build/install/java-package/bin/java-package
 
 run:
 	./gradlew run
@@ -22,7 +22,7 @@ test:
 report:
 	./gradlew jacocoTestReport
 
-checkstyleMain:
+lint:
 	./gradlew checkstyleMain
 
 check-deps:
@@ -30,4 +30,5 @@ check-deps:
 
 
 build-run: build run
+
 .PHONY: build
