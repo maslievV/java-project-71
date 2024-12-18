@@ -19,19 +19,19 @@ public class DifferTest {
                 .normalize();
     }
 
-    public static String readFile(String fileName) throws Exception{
+    public static String readFile(String fileName) throws Exception {
         var fullPath = getAbsolutePath(fileName);
         return Files.readString(fullPath).trim();
     }
 
     @BeforeAll
-    public static void setup() throws Exception{
+    public static void setup() throws Exception {
         testDiffer1 = getAbsolutePath("input_files/jsonTest1.json").toString();
         testDiffer2 = getAbsolutePath("input_files/jsonTest2.json").toString();
     }
 
     @Test
-    public void testDifferGenerate() throws Exception{
+    public void testDifferGenerate() throws Exception {
         var actual = Differ.generate(testDiffer1, testDiffer2);
         var expected = readFile("output_files/outputJson.text");
         assertEquals(expected, actual);

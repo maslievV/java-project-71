@@ -39,7 +39,7 @@ public class Differ {
                 //diffData.put("- " + key, value1);
             } else if (Objects.equals(value1, value2)) {
                 //diffData.put(" " + key, value1);
-                        builder.append(key)
+                builder.append(key)
                         .append(": ")
                         .append(value1)
                         .append("\n");
