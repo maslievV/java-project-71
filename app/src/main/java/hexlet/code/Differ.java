@@ -18,7 +18,7 @@ public class Differ {
     ) {
         var allDataKeys = new TreeSet<String>(jsonMap1.keySet());
         allDataKeys.addAll(jsonMap2.keySet());
-        StringBuilder builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder("{\n");
         for (var key: allDataKeys) {
             Object value1 = jsonMap1.get(key);
             Object value2 = jsonMap2.get(key);
@@ -39,8 +39,7 @@ public class Differ {
                 //diffData.put("- " + key, value1);
             } else if (Objects.equals(value1, value2)) {
                 //diffData.put(" " + key, value1);
-                builder.append(" ")
-                        .append(key)
+                        builder.append(key)
                         .append(": ")
                         .append(value1)
                         .append("\n");
@@ -59,6 +58,7 @@ public class Differ {
                         .append("\n");
             }
         }
+        builder.append("}");
         return builder.toString();
     }
 
