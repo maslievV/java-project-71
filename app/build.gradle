@@ -31,12 +31,16 @@ test {
 }
 
 jacoco {
-    toolVersion = "0.8.6"
+    toolVersion = "0.8.11"
 }
 
 jacocoTestReport {
     dependsOn test
     reports {
-        xml.required = true
+        html.required.set(true)  // Включение HTML отчета
+        xml.required.set(true)   // Включение XML отчета
+        csv.required.set(false)
+//        xml.required = true
+//        html.destination file("$buildDir/reports/jacoco")
     }
 }
