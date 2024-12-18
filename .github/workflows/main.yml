@@ -18,13 +18,13 @@ jobs:
         uses: gradle/gradle-build-action@v2
 
       - name: Execute Gradle build
-        run: make build
+        run: cd app/ && ./gradlew build
 
       - name: Test & publish code coverage
         uses: paambaati/codeclimate-action@v8.0.0
         env:
           CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
-          JACOCO_SOURCE_PATH: "${{github.workspace}}/src/main/java"
+          JACOCO_SOURCE_PATH: "${{github.workspace}}app/src/main/java"
         with:
           workingDirectory: app/
           coverageCommand: make report
