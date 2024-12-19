@@ -10,8 +10,10 @@ import java.nio.file.Paths;
 
 public class DifferTest {
 
-    private static String testDiffer1;
-    private static String testDiffer2;
+    private static String testJson1;
+    private static String testJson2;
+    private static String testYaml1;
+    private static String testYaml2;
 
     public static Path getAbsolutePath(String fileName) {
         return Paths.get("src/test/resources/", fileName)
@@ -26,14 +28,20 @@ public class DifferTest {
 
     @BeforeAll
     public static void setup() throws Exception {
-        testDiffer1 = getAbsolutePath("input_files/jsonTest1.json").toString();
-        testDiffer2 = getAbsolutePath("input_files/jsonTest2.json").toString();
+        testJson1 = getAbsolutePath("input_files/jsonTest1.json").toString();
+        testJson2 = getAbsolutePath("input_files/jsonTest2.json").toString();
+        testYaml1 = getAbsolutePath("input_files/yamlTest1.yaml").toString();
+        testYaml2 = getAbsolutePath("input_files/yamlTest2.yaml").toString();
     }
 
     @Test
     public void testDifferGenerate() throws Exception {
-        var actual = Differ.generate(testDiffer1, testDiffer2);
-        var expected = readFile("output_files/outputJson.text");
-        assertEquals(expected, actual);
+        var actual1 = Differ.generate(testJson1, testJson2);
+        var expected1 = readFile("output_files/output.txt");
+        assertEquals(expected1, actual1);
+
+        var actual2 = Differ.generate(testYaml1, testYaml2);
+        var expected2 = readFile("output_files/output.txt");
+        assertEquals(expected2, actual2);
     }
 }

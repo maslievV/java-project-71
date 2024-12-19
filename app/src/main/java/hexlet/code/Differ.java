@@ -24,38 +24,13 @@ public class Differ {
             Object value2 = jsonMap2.get(key);
 
             if (!jsonMap1.containsKey(key)) {
-                builder.append("+ ")
-                        .append(key)
-                        .append(": ")
-                        .append(value2)
-                        .append("\n");
-                //diffData.put("+ " + key, value2);
+                builder.append(String.format("+ %s: %s\n", key, value2));
             } else if (!jsonMap2.containsKey(key)) {
-                builder.append("- ")
-                        .append(key)
-                        .append(": ")
-                        .append(value1)
-                        .append("\n");
-                //diffData.put("- " + key, value1);
+                builder.append(String.format("- %s: %s\n", key, value1));
             } else if (Objects.equals(value1, value2)) {
-                //diffData.put(" " + key, value1);
-                builder.append(key)
-                        .append(": ")
-                        .append(value1)
-                        .append("\n");
+                builder.append(String.format("%s: %s\n", key, value1));
             } else {
-//                diffData.put("- " + key, value1);
-//                diffData.put("+ " + key, value2);
-                builder.append("- ")
-                        .append(key)
-                        .append(": ")
-                        .append(value1)
-                        .append("\n")
-                        .append("+ ")
-                        .append(key)
-                        .append(": ")
-                        .append(value2)
-                        .append("\n");
+                builder.append(String.format("- %s: %s\n+ %s: %s\n", key, value1, key, value2));
             }
         }
         builder.append("}");
