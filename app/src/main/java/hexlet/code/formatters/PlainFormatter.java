@@ -19,17 +19,17 @@ public class PlainFormatter {
             var value1 = entry.getValue().get(1);
             var value2 = entry.getValue().size() > 2 ? entry.getValue().get(2) : null;
 
-            builder.append(
-                    switch (status) {
-                        case UPDATED -> String.format("Property '%s' was updated. From %s to %s\n",
-                                key, isComplexValue(value1), isComplexValue(value2));
-                        case REMOVED -> String.format("Property '%s' was removed\n", key);
-                        case ADDED -> String.format("Property '%s' was added with value: %s\n",
-                                key, isComplexValue(value1));
-                        case UNCHANGED -> "";
-                        default -> throw new IllegalStateException("Unexpected status: " + status);
-                    }
-            );
+            var content = switch (status) {
+                case UPDATED -> String.format("Property '%s' was updated. From %s to %s\n",
+                        key, isComplexValue(value1), isComplexValue(value2));
+                case REMOVED -> String.format("Property '%s' was removed\n", key);
+                case ADDED -> String.format("Property '%s' was added with value: %s\n",
+                        key, isComplexValue(value1));
+                case UNCHANGED -> "";
+                default -> throw new IllegalStateException("Unexpected status: " + status);
+            };
+
+            builder.append(content);
         }
         return builder.toString().trim();
     }

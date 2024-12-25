@@ -17,16 +17,15 @@ public class StylishFormatter {
             var value1 = diffMap.get(key).get(1);
             var status = diffMap.get(key).getFirst();
 
-            builder.append(
-                    switch (status) {
-                        case ADDED -> String.format("  + %s: %s\n", key, value1);
-                        case REMOVED -> String.format("  - %s: %s\n", key, value1);
-                        case UNCHANGED -> String.format("    %s: %s\n", key, value1);
-                        case UPDATED -> String.format("  - %s: %s\n  + %s: %s\n",
-                                key, value1, key, diffMap.get(key).get(2));
-                        default -> throw new IllegalStateException("Unexpected format: " + status);
-                    }
-            );
+            var content = switch (status) {
+                case ADDED -> String.format("  + %s: %s\n", key, value1);
+                case REMOVED -> String.format("  - %s: %s\n", key, value1);
+                case UNCHANGED -> String.format("    %s: %s\n", key, value1);
+                case UPDATED -> String.format("  - %s: %s\n  + %s: %s\n",
+                        key, value1, key, diffMap.get(key).get(2));
+                default -> throw new IllegalStateException("Unexpected format: " + status);
+            };
+            builder.append(content);
 
         }
         return builder.append("}").toString();
