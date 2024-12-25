@@ -35,13 +35,23 @@ public class DifferTest {
     }
 
     @Test
-    public void testDifferGenerate() throws Exception {
-        var actual1 = Differ.generate(testJson1, testJson2);
-        var expected1 = readFile("output_files/output.txt");
-        assertEquals(expected1, actual1);
+    public void testDifferStylish() throws Exception {
+        var actual = Differ.generate(testJson1, testJson2);
+        var expected = readFile("output_files/outputStylish.txt");
+        assertEquals(expected, actual);
+    }
 
-        var actual2 = Differ.generate(testYaml1, testYaml2);
-        var expected2 = readFile("output_files/output.txt");
-        assertEquals(expected2, actual2);
+    @Test
+    public void testDifferPlain() throws Exception {
+        var actual = Differ.generate(testJson1, testJson2, "plain");
+        var expected = readFile("output_files/outputPlain.txt");
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testDifferJson() throws Exception {
+        var actual = Differ.generate(testJson1, testJson2, "json");
+        var expected = readFile("output_files/outputJson.json");
+        assertEquals(expected, actual);
     }
 }
