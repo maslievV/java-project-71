@@ -1,5 +1,7 @@
 package hexlet.code.formatters;
 
+import hexlet.code.DiffStatuses;
+
 import static hexlet.code.DiffStatuses.UPDATED;
 import static hexlet.code.DiffStatuses.ADDED;
 import static hexlet.code.DiffStatuses.REMOVED;
@@ -10,23 +12,22 @@ import java.util.Map;
 
 public class PlainFormatter {
 
-    public static String format(Map<String, List<Object>> diffMap) {
+    public static String format(List<Map<String, Object>> diffData) {
         StringBuilder builder = new StringBuilder();
 
-        for (var entry: diffMap.entrySet()) {
-            String key = entry.getKey();
-            var status = entry.getValue().getFirst();
-            var value1 = entry.getValue().get(1);
-            var value2 = entry.getValue().size() > 2 ? entry.getValue().get(2) : null;
+        for (var map: diffData) {
+            var key = map.get("key");
+            var status = (DiffStatuses) map.get("status");
+            var oldValue = map.get("oldValue");
+            var newValue = map.get("newValue");
 
             var content = switch (status) {
                 case UPDATED -> String.format("Property '%s' was updated. From %s to %s\n",
-                        key, isComplexValue(value1), isComplexValue(value2));
+                        key, formatValue(oldValue), formatValue(newValue));
                 case REMOVED -> String.format("Property '%s' was removed\n", key);
                 case ADDED -> String.format("Property '%s' was added with value: %s\n",
-                        key, isComplexValue(value1));
+                        key, formatValue(newValue));
                 case UNCHANGED -> "";
-                default -> throw new IllegalStateException("Unexpected status: " + status);
             };
 
             builder.append(content);
@@ -34,7 +35,7 @@ public class PlainFormatter {
         return builder.toString().trim();
     }
 
-    public static String isComplexValue(Object value) {
+    public static String formatValue(Object value) {
 
         if (value instanceof Map || value instanceof List) {
             return "[complex value]";

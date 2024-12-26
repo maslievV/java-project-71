@@ -10,11 +10,11 @@ import java.util.Map;
 
 public class Formatter {
 
-    public static String format(Map<String, List<Object>> diffMap, String format) throws JsonProcessingException {
+    public static String format(List<Map<String, Object>> diffData, String format) throws JsonProcessingException {
         return switch (format) {
-            case "plain" -> PlainFormatter.format(diffMap);
-            case "json" -> JsonFormatter.format(diffMap);
-            case "stylish" -> StylishFormatter.format(diffMap);
+            case "plain" -> PlainFormatter.format(diffData);
+            case "json" -> JsonFormatter.format(diffData);
+            case "stylish" -> StylishFormatter.format(diffData);
             default -> throw new IllegalStateException("Unknown type of format: " + format);
         };
     }

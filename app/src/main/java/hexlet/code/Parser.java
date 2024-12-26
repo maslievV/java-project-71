@@ -11,17 +11,12 @@ import java.nio.file.Paths;
 import java.util.Map;
 
 public class Parser {
-    public static Map<String, Object> parse(String filepath) throws IOException {
-        var extension = getFormat(filepath);
-        ObjectMapper mapper = switch (extension) {
+    public static Map<String, Object> parse(String content, String format) throws IOException {
+        ObjectMapper mapper = switch (format) {
             case ".json" -> new ObjectMapper();
             case ".yml", ".yaml" -> new ObjectMapper(new YAMLFactory());
             default -> throw new IOException("Unexpected extension: ");
         };
-
-        var normalizedPath = getNormalizedPath(filepath);
-        byte[] content = Files.readAllBytes(normalizedPath);
-
         return mapper.readValue(content, new TypeReference<>() {
         });
     }
@@ -35,5 +30,12 @@ public class Parser {
     public static String getFormat(String filepath) {
         int lastIndex = filepath.lastIndexOf(".");
         return filepath.substring(lastIndex);
+    }
+
+    public static Map<String, Object> readFile(String filepath) throws Exception {
+        var normalizedPath = getNormalizedPath(filepath);
+        String content = Files.readString(normalizedPath);
+        var format = getFormat(filepath);
+        return parse(content, format);
     }
 }

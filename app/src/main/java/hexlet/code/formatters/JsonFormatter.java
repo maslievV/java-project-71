@@ -8,9 +8,9 @@ import java.util.Map;
 
 public class JsonFormatter {
 
-    public static String format(Map<String, List<Object>> diffMap) throws JsonProcessingException {
+    public static String format(List<Map<String, Object>> diffData) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-        return mapper.writeValueAsString(diffMap);
+        return mapper.writeValueAsString(diffData);
     }
 
 }

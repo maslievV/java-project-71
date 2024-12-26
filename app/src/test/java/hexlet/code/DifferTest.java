@@ -1,7 +1,9 @@
 package hexlet.code;
 
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.nio.file.Files;
@@ -10,10 +12,9 @@ import java.nio.file.Paths;
 
 public class DifferTest {
 
-    private static String testJson1;
-    private static String testJson2;
-    private static String testYaml1;
-    private static String testYaml2;
+    private static String expectedStylish;
+    private static String expectedPlain;
+    private static String expectedJson;
 
     public static Path getAbsolutePath(String fileName) {
         return Paths.get("src/test/resources/", fileName)
@@ -28,30 +29,44 @@ public class DifferTest {
 
     @BeforeAll
     public static void setup() throws Exception {
-        testJson1 = getAbsolutePath("input_files/jsonTest1.json").toString();
-        testJson2 = getAbsolutePath("input_files/jsonTest2.json").toString();
-        testYaml1 = getAbsolutePath("input_files/yamlTest1.yaml").toString();
-        testYaml2 = getAbsolutePath("input_files/yamlTest2.yaml").toString();
+        expectedStylish = readFile("output_files/outputStylish.txt");
+        expectedJson = readFile("output_files/outputJson.json");
+        expectedPlain = readFile("output_files/outputPlain.txt");
     }
 
-    @Test
-    public void testDifferStylish() throws Exception {
-        var actual = Differ.generate(testJson1, testJson2);
-        var expected = readFile("output_files/outputStylish.txt");
-        assertEquals(expected, actual);
+    @ParameterizedTest
+    @ValueSource(strings = {"json", "yaml"})
+    public void testDifferDefault(String extension) throws Exception {
+        var fileTest1 = getAbsolutePath("input_files/fileTest1." + extension).toString();
+        var fileTest2 = getAbsolutePath("input_files/fileTest2." + extension).toString();
+        var actual = Differ.generate(fileTest1, fileTest2);
+        assertEquals(expectedStylish, actual);
     }
 
-    @Test
-    public void testDifferPlain() throws Exception {
-        var actual = Differ.generate(testJson1, testJson2, "plain");
-        var expected = readFile("output_files/outputPlain.txt");
-        assertEquals(expected, actual);
+    @ParameterizedTest
+    @ValueSource(strings = {"json", "yaml"})
+    public void testDifferStylish(String extension) throws Exception {
+        var fileTest1 = getAbsolutePath("input_files/fileTest1." + extension).toString();
+        var fileTest2 = getAbsolutePath("input_files/fileTest2." + extension).toString();
+        var actual = Differ.generate(fileTest1, fileTest2, "stylish");
+        assertEquals(expectedStylish, actual);
     }
 
-    @Test
-    public void testDifferJson() throws Exception {
-        var actual = Differ.generate(testJson1, testJson2, "json");
-        var expected = readFile("output_files/outputJson.json");
-        assertEquals(expected, actual);
+    @ParameterizedTest
+    @ValueSource(strings = {"json", "yaml"})
+    public void testDifferPlain(String extension) throws Exception {
+        var fileTest1 = getAbsolutePath("input_files/fileTest1." + extension).toString();
+        var fileTest2 = getAbsolutePath("input_files/fileTest2." + extension).toString();
+        var actual = Differ.generate(fileTest1, fileTest2, "plain");
+        assertEquals(expectedPlain, actual);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"json", "yaml"})
+    public void testDifferJson(String extension) throws Exception {
+        var fileTest1 = getAbsolutePath("input_files/fileTest1." + extension).toString();
+        var fileTest2 = getAbsolutePath("input_files/fileTest2." + extension).toString();
+        var actual = Differ.generate(fileTest1, fileTest2, "json");
+        assertEquals(expectedJson, actual);
     }
 }
