@@ -1,25 +1,25 @@
 package hexlet.code.formatters;
 
-import hexlet.code.DiffStatuses;
-
-import static hexlet.code.DiffStatuses.UPDATED;
-import static hexlet.code.DiffStatuses.ADDED;
-import static hexlet.code.DiffStatuses.REMOVED;
-import static hexlet.code.DiffStatuses.UNCHANGED;
+import hexlet.code.utils.DiffStatuses;
+import hexlet.code.utils.DiffKeys;
+import static hexlet.code.utils.DiffKeys.KEY;
+import static hexlet.code.utils.DiffKeys.STATUS;
+import static hexlet.code.utils.DiffKeys.OLD_VALUE;
+import static hexlet.code.utils.DiffKeys.NEW_VALUE;
 
 import java.util.List;
 import java.util.Map;
 
 public class PlainFormatter {
 
-    public static String format(List<Map<String, Object>> diffData) {
+    public static String format(List<Map<DiffKeys, Object>> diffData) {
         StringBuilder builder = new StringBuilder();
 
         for (var map: diffData) {
-            var key = map.get("key");
-            var status = (DiffStatuses) map.get("status");
-            var oldValue = map.get("oldValue");
-            var newValue = map.get("newValue");
+            var key = map.get(KEY);
+            var status = (DiffStatuses) map.get(STATUS);
+            var oldValue = map.get(OLD_VALUE);
+            var newValue = map.get(NEW_VALUE);
 
             var content = switch (status) {
                 case UPDATED -> String.format("Property '%s' was updated. From %s to %s\n",

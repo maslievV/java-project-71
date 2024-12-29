@@ -1,24 +1,24 @@
 package hexlet.code.formatters;
 
-import hexlet.code.DiffStatuses;
-
-import static hexlet.code.DiffStatuses.UPDATED;
-import static hexlet.code.DiffStatuses.ADDED;
-import static hexlet.code.DiffStatuses.UNCHANGED;
-import static hexlet.code.DiffStatuses.REMOVED;
+import hexlet.code.utils.DiffStatuses;
+import hexlet.code.utils.DiffKeys;
+import static hexlet.code.utils.DiffKeys.KEY;
+import static hexlet.code.utils.DiffKeys.STATUS;
+import static hexlet.code.utils.DiffKeys.OLD_VALUE;
+import static hexlet.code.utils.DiffKeys.NEW_VALUE;
 
 import java.util.List;
 import java.util.Map;
 
 public class StylishFormatter {
-    public static String format(List<Map<String, Object>> diffData) {
+    public static String format(List<Map<DiffKeys, Object>> diffData) {
         StringBuilder builder = new StringBuilder("{\n");
 
         for (var map: diffData) {
-            var key = map.get("key");
-            var oldValue = map.get("oldValue");
-            var newValue = map.get("newValue");
-            var status = (DiffStatuses) map.get("status");
+            var key = map.get(KEY);
+            var oldValue = map.get(OLD_VALUE);
+            var newValue = map.get(NEW_VALUE);
+            var status = (DiffStatuses) map.get(STATUS);
 
             var content = switch (status) {
                 case ADDED -> String.format("  + %s: %s\n", key, newValue);
