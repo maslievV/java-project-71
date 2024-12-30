@@ -1,7 +1,7 @@
 package hexlet.code;
 
 import java.util.Map;
-import java.util.LinkedHashMap;
+import java.util.TreeMap;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -30,7 +30,7 @@ public class DiffGenerator {
         for (var key: allDataKeys) {
             Object value1 = jsonMap1.get(key);
             Object value2 = jsonMap2.get(key);
-            var diffMap = new LinkedHashMap<DiffKeys, Object>();
+            var diffMap = new TreeMap<DiffKeys, Object>();
 
             diffMap.put(KEY, key);
 
